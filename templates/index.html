@@ -1,0 +1,41 @@
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Emily Markov</title>
+  <!-- Foundation -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/foundation.css')}}" />
+  <link rel="stylesheet" href="{{url_for('static', filename='css/normalize.css')}}" />
+</head>
+<body>
+  <div class="row">
+    <h3 id='textBar'></h3>
+  <div class="row">
+    <pre>{{poem}}</pre>
+    <img id='pic' src='{{pic}}' hidden/>
+  </div>
+  <button id='real'>Real</button>
+  <button id='faux'>Faux</button>
+  <script>
+  (function(){
+    var rightId = {% if real %} 'real' {% else %} 'faux' {% endif %},
+        realButton = document.getElementById('real'),
+        fauxButton = document.getElementById('faux'),
+        pic = document.getElementById('pic'),
+        textBar = document.getElementById('textBar'),
+        rightText = "You got it right!",
+        wrongText = "You got it wrong!";
+
+    var rightOrWrong = function(e) {
+      if (e.srcElement.id === rightId) {
+        textBar.innerHTML = rightText;
+      } else {
+        textBar.innerHTML = wrongText;
+      }
+      pic.hidden = false;
+    };
+
+  realButton.addEventListener('click', rightOrWrong);
+  fauxButton.addEventListener('click', rightOrWrong);
+  })();
+  </script>
+</body>
