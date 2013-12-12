@@ -7,35 +7,62 @@
   <link rel="stylesheet" href="{{url_for('static', filename='css/normalize.css')}}" />
 </head>
 <body>
+  <nav class="top-bar">
+      <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+          <h1><a href='#'>Emily Markov</a></h1>
+        </li>
+      </ul>
+    </nav>
   <div class="row">
-    <h3 id='textBar'></h3>
-  <div class="row">
-    <pre>{{poem}}</pre>
-    <img id='pic' src='{{pic}}' hidden/>
+    <div class='small-6 large-6 columns'>
+      <h3>Is this a real Emily Dickinson poem? </h3>
+      <hr />
+      <pre>{{poem}}</pre>
+      <hr />
+      <button id='real' class='button'>Real</button>
+      <button id='faux' class='button alert'>Faux</button>
+    </div>
+    <div id='picViewer' class='small-6 large-6 columns' hidden>
+      <h3 id='textBar'></h3>
+      <hr />
+      <img src='{{pic}}'/>
+      <hr />
+      <button id='reload'>Try again!</button>
+    </div>
   </div>
-  <button id='real'>Real</button>
-  <button id='faux'>Faux</button>
   <script>
   (function(){
     var rightId = {% if real %} 'real' {% else %} 'faux' {% endif %},
         realButton = document.getElementById('real'),
         fauxButton = document.getElementById('faux'),
-        pic = document.getElementById('pic'),
+        pic = document.getElementById('picViewer'),
+        reloadButton = document.getElementById('reload'),
         textBar = document.getElementById('textBar'),
         rightText = "You got it right!",
         wrongText = "You got it wrong!";
 
     var rightOrWrong = function(e) {
+      if (pic.hidden === false) {
+        // only run once
+        return false;
+      }
       if (e.srcElement.id === rightId) {
         textBar.innerHTML = rightText;
+        reloadButton.innerText = 'Can you do it again?'
       } else {
         textBar.innerHTML = wrongText;
+        reloadButton.innerText = 'Try again!'
       }
       pic.hidden = false;
     };
 
   realButton.addEventListener('click', rightOrWrong);
   fauxButton.addEventListener('click', rightOrWrong);
+  reloadButton.addEventListener('click',function(e){
+      location.reload();
+      });
   })();
   </script>
 </body>
